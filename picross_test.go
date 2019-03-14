@@ -7,15 +7,34 @@ import (
 )
 
 // Test data
-var puzzleData Picross
+//var puzzleData Picross
 
 func TestValidate(t *testing.T) {
 	tests := []struct {
 		name         string
-		picross      Picross
 		expectedExit bool
+		picross      Picross
 	}{
-		{"Empty puzzle", puzzleData, false},
+		{"Empty puzzle", false, Picross{}},
+		{"No Squares Filled In", false, Picross{Solution: [][]bool{
+			{false, false},
+			{false, false},
+		}}},
+		{"Columns With Different Lengths", false, Picross{Solution: [][]bool{
+			{false, true, false},
+			{false, false},
+			{true, false, true},
+		}}},
+		{"Valid Small Puzzle", true, Picross{Solution: [][]bool{
+			{false, true, false},
+			{true, true, true},
+			{false, true, false},
+		}}},
+		// invalid small puzzle - square
+		{"Invalid Small Puzzle - Square", false, Picross{Solution: [][]bool{
+			{false, true},
+			{true, false},
+		}}},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -23,3 +42,5 @@ func TestValidate(t *testing.T) {
 		})
 	}
 }
+
+//Create puzzle, which validates and fills clue arrays
